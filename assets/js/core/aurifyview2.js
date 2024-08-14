@@ -199,7 +199,7 @@ async function fetchData1() {
 
     updatePrice();
 
-    
+
 
     document.getElementById("lowLabelGold").innerHTML = goldLow;
     document.getElementById("highLabelGold").innerHTML = goldHigh;
@@ -290,14 +290,18 @@ async function readData() {
   );
   const result = [];
   querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    const timestamp = data.timestamp;
+
     result.push({
       id: doc.id,
       data: doc.data(),
+      timestamp: timestamp,
     });
   });
+  result.sort((a, b) => a.timestamp - b.timestamp);
   return result;
 }
-
 
 
 async function showTable() {
@@ -325,9 +329,6 @@ async function showTable() {
       } else if (weightInput === "TTB") {
         metal = "TT BAR";
         purity = purityInput;
-      } else if (weightInput === "GM") {
-        metal = "22";
-        purity = "KT";
       } else {
         metal = metalInput;
         purity = purityInput;
@@ -382,17 +383,17 @@ async function showTable() {
           newRow.querySelector("#sellAED").innerText = parseFloat(
             (
               goldAskingPrice *
-                unitInput *
-                unitMultiplier *
-                (purityInput / Math.pow(10, purityInput.length)) +
+              unitInput *
+              unitMultiplier *
+              (purityInput / Math.pow(10, purityInput.length)) +
               parseFloat(sellPremium)
             ).toFixed(2)
           );
           newRow.querySelector("#buyAED").innerText = (
             goldBiddingPrice *
-              unitInput *
-              unitMultiplier *
-              (purityInput / Math.pow(10, purityInput.length)) +
+            unitInput *
+            unitMultiplier *
+            (purityInput / Math.pow(10, purityInput.length)) +
             parseFloat(buyPremium)
           ).toFixed(2);
         } else {
@@ -400,18 +401,18 @@ async function showTable() {
           const sellAEDValue = parseFloat(
             (
               goldAskingPrice *
-                unitInput *
-                unitMultiplier *
-                (purityInput / Math.pow(10, purityInput.length)) +
+              unitInput *
+              unitMultiplier *
+              (purityInput / Math.pow(10, purityInput.length)) +
               parseFloat(sellPremium)
             ).toFixed(4)
           );
           const buyAEDValue = parseInt(
             goldBiddingPrice *
-              unitInput *
-              unitMultiplier *
-              (purityInput / Math.pow(10, purityInput.length)) +
-              parseFloat(buyPremium)
+            unitInput *
+            unitMultiplier *
+            (purityInput / Math.pow(10, purityInput.length)) +
+            parseFloat(buyPremium)
           ).toFixed(0);
 
           newRow.querySelector("#sellAED").innerText =
